@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Arquivos editáveis de resposta
+.odt
