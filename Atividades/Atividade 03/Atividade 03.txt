@@ -1,0 +1,18 @@
+Descreva as fases de um Projeto de Banco de Dados:
+
+
+1) Modelagem Conceitual
+
+| É a etapa em que todos os requisitos (entidades e relacionamentos) do cliente são postos em nota, de modo que a modelagem resulte em um modelo inicial e simples de visualização do projeto
+
+
+
+2) Projeto Lógico
+
+| É a fase em que as entidades e seus relacionamentos são detalhados ainda mais a fim de representar melhor o objeto da realidade que está sendo modelado
+
+
+
+3) Projeto Físico
+
+| É a etapa de modelagem que leva em conta as anteriores e as limitações do SGBD que será utilizado no projeto final 

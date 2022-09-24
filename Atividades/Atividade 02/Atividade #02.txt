@@ -1,0 +1,12 @@
+Defina o que é:
+
+
+1) Sistema Isolado
+
+| É um sistema de armazenamento de dados em que os mesmos não são compartilhados entre si, podendo então gerar redundâncias
+
+
+
+2) Sistema Integrado
+
+| É um sistema de armazenamento de dados em que os mesmos são compartilhados entre si

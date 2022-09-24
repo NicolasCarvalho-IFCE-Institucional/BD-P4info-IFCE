@@ -1,0 +1,33 @@
+Entidade
+
+| São objetos da realidade observável que podem ser representados por atributos/dados
+
+
+
+Relacionamento
+
+| São associações entre ocorrências de entidades
+ 
+
+
+Atributo
+
+| São dados que descrevem uma entidade
+
+
+
+Domínio de um Atributo
+
+| É o conjunto de valores que um determinado atributo pode assumir
+ 
+
+
+Generalização/especialização
+
+| Generalização é o ato de criar entidades descritas em atributos gerais que podem se ramificar em outras entidades de especialização, que por sua vez possuem, além do seu, identificadores das genéricas
+
+
+
+Entidade Associativa
+
+| É quando um relacionamento, em determinado contexto de necessidade de armazenamento de atributos, precisa de transformar em uma entidade
