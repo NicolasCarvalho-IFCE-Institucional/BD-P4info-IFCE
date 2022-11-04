@@ -8,7 +8,7 @@ const { Database } = require('sqlite3')
 const sqlite3 = require('sqlite3').verbose()
 
 
-db = new sqlite3.Database(':memory:', (erro ) => {
+db = new sqlite3.Database('BD_SCA.db', (erro ) => {
 	if (erro) {console.log('[ Ao criar BD ] ', erro)}
 	else { console.log('Conectado ao banco de dados') }
 })
