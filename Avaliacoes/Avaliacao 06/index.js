@@ -2,6 +2,7 @@
 // P4 de Informática
 
 // Criando banco de dados
+
 const { Database } = require('sqlite3')
 
 
@@ -14,37 +15,41 @@ db = new sqlite3.Database('BD_SCA.db', (erro ) => {
 })
 
 
-const alunos = ["Alberto", 'Beatriz', 'Carlos', 'Duda']
+const alunos = ['Alberto', 'Beatriz', 'Carlos', 'Duda']
+
 const professores = ['Eduardo', 'Fabiola', 'Geraldo', 'Hiago']
-const disciplinas = ['Portugues', 'Matematica', 'Historia', 'Geografia']
 
+const disciplinas = ['Matemática', 'Inglês', 'História', 'Geografia']
 
-/*
-function sorteia_item (array) {
-	return Math.floor(Math.random() * array.length)
-}
-*/
+const professores_disciplinas = [
+	[1, 1],
+	[1, 2],
+	[2, 3],
+	[4, 3]
+]
 
+const matriculas = [
+	[1, 1],
+	[1, 2],
+	[2, 3],
+	[4, 4]
+]
 
-/*
-function sorteia_ID(nome_tabela) {
-	db.all(`SELECT * FROM ${nome_tabela}`, [], (erro, resultado_tabela) => {
-		
-		if (!erro) {
-			return new Promise((resolve) => {
-				const ID = sorteia_item(resultado_tabela).ID
-				resolve(ID)
-			})
-		}
+const campos_simples = array => array.map( ()=>'(?)' ).join(', ')
+const campos_complexos = array => array.map(() => '(?, ?)').join(',')
+const matriz_linear = array => {
 
-		else {
-			console.log(erro)	
-		}
-		
+	novo_array = []
+
+	array.map((linha, _) => {
+		linha.map((coluna, _) => {
+			novo_array.push(coluna)
+		})
 	})
-}
-*/
 
+	return novo_array
+	
+}
 
 
 
@@ -63,126 +68,91 @@ db.serialize( () => {
 
 	db.run(`CREATE TABLE TB_DISCIPLINAS (
  		ID INTEGER PRIMARY KEY AUTOINCREMENT,
-   		NOME TEXT NOT NULL,
-	 	PROFESSOR_ID INTEGER NOT NULL,
-   
-   		FOREIGN KEY("PROFESSOR_ID") REFERENCES "TB_PROFESSORES"("ID")
+   		NOME TEXT NOT NULL
+	)`)
+
+	db.run(`CREATE TABLE TB_PROFESSORES_DISCIPLINAS (
+ 		ID INTEGER PRIMARY KEY AUTOINCREMENT,
+
+ 		PROFESSOR_ID INTEGER NOT NULL, 
+   		DISCIPLINA_ID INTEGER NOT NULL,
+   		
+	 	FOREIGN KEY("PROFESSOR_ID") REFERENCES "TB_PROFESSORES"("ID"),
+		FOREIGN KEY("DISCIPLINA_ID") REFERENCES "TB_DISCIPLINAS"("ID")
+  		
 	)`)
 
 	db.run(`CREATE TABLE TB_MATRICULAS (
  		ID INTEGER PRIMARY KEY AUTOINCREMENT,
-   		ALUNO_ID INTEGER,
-	 	DISCIPLINA_ID INTEGER NOT NULL,
-
+   
+   		ALUNO_ID INTEGER NOT NULL,
+		PROFESSOR_DISCIPLINA_ID INTEGER NOT NULL,
+  
 		FOREIGN KEY("ALUNO_ID") REFERENCES "TB_ALUNO"("ID"),
-  		FOREIGN KEY("DISCIPLINA_ID") REFERENCES "TB_DISCIPLINA"("ID")
+  		FOREIGN KEY("PROFESSOR_DISCIPLINA_ID") REFERENCES "TB_PROFESSORES_DISCIPLINAS"("ID")
 	)`)
 
-
-
-
-
-	// Inserindo os dados nas tabelas
-	db.run(`
-		INSERT INTO TB_ALUNOS (NOME)
-	 	VALUES (?), (?), (?), (?)
-   	`, alunos, (erro) => { if(erro) {console.log(erro)} })
-
-
-	
-
-	db.run(`
-		INSERT INTO TB_PROFESSORES (NOME)
-	 	VALUES (?), (?), (?), (?)
-   	`, professores, (erro) => { if(erro) {console.log(erro)} })
 	
 
 
+
+
+
+
+
 	
-	/*
-	db.each('SELECT * FROM TB_PROFESSORES', [], (erro, professor) => {
-
-		const disciplina_nome = await sorteia_item(disciplinas)
-		
-		// Selecionando um professor
-		db.run(`
-  			INSERT INTO TB_DISCIPLINAS (NOME, PROFESSOR_ID)
-	 		VALUES (?) (?)
-		`,
-
-			   
-		// Combinando o professor com uma disciplina
-		[disciplina_nome, professor.ID],
-
-			   
-		// Tratando erro do insert	   
-		(erro) => {
-			if (erro) {
-				console.log(erro)
-			}
-		})
-
-		
-		// Tratando erro do select
-		if (erro) {
-			console.log(erro)
+	db.run('INSERT INTO TB_ALUNOS (NOME) VALUES ' + campos_simples(alunos),
+		alunos, 
+		(erro) => { 
+			if(erro) {console.log(erro)} 
 		}
-		
-	})
-	*/
-
-	db.run(`INSERT INTO TB_DISCIPLINAS (NOME, PROFESSOR_ID)
- 			VALUES
-				("Matemática", 1),
-				("Português", 2),
-				("Inglês", 3),
-				("História", 4)
-	`)
+	)	
 
 
 	
 
-	/*
-	db.each('SELECT * FROM TB_ALUNOS', [], (erro, aluno) => {
-
-		const disciplina_id = await sorteia_ID('TB_DISCIPLINAS')
-		
-		//Selecionando um aluno
-		db.run(`
-  			INSERT INTO TB_MATRICULAS (ALUNO_ID, DISCIPLINA_ID)
-	 		VALUES (?) (?)
-		`, 
-
-			   
-		// Combinando o aluno com uma disciplina
-		[aluno.ID, disciplina_id],
-
-			   
-		// Tratando erro do insert	   
-		(erro) => {
-			if (erro) {
-				console.log(erro)
-			}
-		})
-
-		
-		// Tratando erro do select
-		if (erro) {
-			console.log(erro)
+	db.run('INSERT INTO TB_PROFESSORES (NOME) VALUES ' + campos_simples(professores),
+		alunos, 
+		(erro) => { 
+			if(erro) {console.log(erro)} 
 		}
-		
-	})
-	*/
+	)	
+	
 
-	db.run(`INSERT INTO TB_MATRICULAS (ALUNO_ID, DISCIPLINA_ID)
-		VALUES
-			(1, 1),
-			(1, 2),
-			(2, 3),
-			(4, 4)
-	`)
+	
+	
+	db.run('INSERT INTO TB_DISCIPLINAS (NOME) VALUES ' + campos_simples(disciplinas),
+		disciplinas, 
+		(erro) => { 
+			if(erro) {console.log(erro)} 
+		}
+	)	
 
 
+
+
+	db.run('INSERT INTO TB_PROFESSORES_DISCIPLINAS (PROFESSOR_ID, DISCIPLINA_ID) VALUES' + campos_complexos(professores_disciplinas),
+		  matriz_linear(professores_disciplinas),
+		  (erro) => {
+			  if(erro) {console.log(erro)}
+		  })
+
+	
+
+
+	db.run('INSERT INTO TB_MATRICULAS (ALUNO_ID, PROFESSOR_DISCIPLINA_ID) VALUES' + campos_complexos(matriculas), 
+		  matriz_linear(matriculas),
+		  (erro) => {
+			  if(erro) {console.log(erro)} 
+		  })
+
+
+
+
+
+
+
+	
 	
 
 	db.all( 'SELECT * FROM TB_ALUNOS', [], (erro, alunos) => {
@@ -214,6 +184,16 @@ db.serialize( () => {
 		}
 	} )
 
+
+	db.all( 'SELECT * FROM TB_PROFESSORES_DISCIPLINAS', [], (erro, professores_disciplinas) => {
+		if (!erro) {
+			console.log(professores_disciplinas)
+		}
+		else {
+			console.log(erro)
+		}
+	} )
+	
 	
 	db.all( 'SELECT * FROM TB_MATRICULAS', [], (erro, matriculas) => {
 		if (!erro) {
